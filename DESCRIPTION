@@ -1,11 +1,29 @@
 Package: TWSenso
-Title: What the Package Does (One Line, Title Case)
+Title: Sensory and Consumer Tools  
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Thierry", "Worch", , "thierry.worch@frieslandcampina.com", role = c("aut", "cre"))
+Description: Provide some additional home-made functions for Sensory and Consumer analyses.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Imports: 
+    broom,
+    DescTools,
+    dplyr,
+    FactoMineR,
+    ggforce,
+    ggplot2,
+    ggrepel,
+    magrittr,
+    purrr,
+    SensoMineR,
+    stringr,
+    tibble,
+    tidyr,
+    tidyselect,
+    TWUtils
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
