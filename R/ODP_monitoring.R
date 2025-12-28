@@ -108,7 +108,7 @@ ODP_monitoring <- function(dataset, duplicate, lim_score=20, lim_rank=3,
                             Rank = panellist_rank_col,
                             Agreement = panellist_agree_col), type="Judge")
   j_sum_col <- j_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) convert(x, sum_max, sum_min)))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) convert(x, sum_max, sum_min)))
 
   a_sum <- summary_tab(list(Discrimination = panellist_dis_col,
                             Score = panellist_score_col,
@@ -117,7 +117,7 @@ ODP_monitoring <- function(dataset, duplicate, lim_score=20, lim_rank=3,
     dplyr::mutate(Attribute = factor(Attribute, levels=attribute)) %>%
     dplyr::arrange(Attribute)
   a_sum_col <- a_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) convert(x, sum_max, sum_min)))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) convert(x, sum_max, sum_min)))
 
   ## Panel ----
   dataset2 <- dataset %>%
@@ -196,37 +196,37 @@ ODP_monitoring <- function(dataset, duplicate, lim_score=20, lim_rank=3,
   res <- list()
 
   res$Panel <- panel %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=3))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=3))) %>%
     dplyr::full_join(panel_col, by="Attribute", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Discrimination <- panellist_dis %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(panellist_dis_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Score <- panellist_score %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(panellist_score_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Rank <- panellist_rank %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(panellist_rank_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Agreement <- panellist_agree %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(panellist_rank_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Summary$Panellist <- j_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=0))) %>%
     dplyr::full_join(j_sum_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Summary$Attribute <- a_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=0))) %>%
     dplyr::full_join(a_sum_col, by="Attribute", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
