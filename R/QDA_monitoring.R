@@ -220,7 +220,7 @@ QDA_monitoring <- function(dataset, col.r="Replica",
       }
 
       res_panel <- res_panel %>%
-        dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, 3)))
+        dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, 3)))
 
       ## 2-way ANOVA Solution
     } else if (type == "repeatability"){
@@ -308,7 +308,7 @@ QDA_monitoring <- function(dataset, col.r="Replica",
 
       res_panel <- res_panel %>%
         dplyr::mutate(Repeatability = TWUtils::formatting(Repeatability, 2)) %>%
-        dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, 3)))
+        dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, 3)))
     }
   }
 
@@ -361,7 +361,7 @@ QDA_monitoring <- function(dataset, col.r="Replica",
       tidyr::pivot_wider(names_from=Attribute, values_from=Diff, values_fn=mean)
 
     j_ref_col <- j_ref %>%
-      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), abs)) %>%
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), abs)) %>%
       colour_code(value=dif_ref, direction=1)
 
   } else {
@@ -421,7 +421,7 @@ QDA_monitoring <- function(dataset, col.r="Replica",
                             `Repeatability (Rank)`=j_reprorank_col,
                             `Agreement (Rank)`=j_agreerank_col), type="Judge")
   j_sum_col <- j_sum %>%
-    mutate(dplyr::across(tidyselect::where(is.numeric()), convert, sum_max, sum_min))
+    mutate(dplyr::across(tidyselect::where(is.numeric), convert, sum_max, sum_min))
 
   a_sum <- summary_tab(list(Discrimination=j_discri_col,
                             Reference=j_ref_col,
@@ -433,7 +433,7 @@ QDA_monitoring <- function(dataset, col.r="Replica",
     dplyr::arrange(Attribute)
 
   a_sum_col <- a_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) convert(x, sum_max, sum_min)))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) convert(x, sum_max, sum_min)))
 
   ## Export Results ----
   res <- list()
@@ -443,47 +443,47 @@ QDA_monitoring <- function(dataset, col.r="Replica",
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"),  \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Discrimination <- j_discri %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=3))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=3))) %>%
     dplyr::full_join(j_discri_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   if (run_ref){
 
     res$Panellist$Reference <- j_ref %>%
-      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
       dplyr::full_join(j_ref_col, by="Judge", suffix=c('','_col')) %>%
       dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
   }
 
   res$Panellist$Reproducibility <- j_repro %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(j_repro_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Agreement <- j_agree %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(j_agree_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(ends_with("_col"), \(x) replace_na(x, 0)))
 
   if (run_ODP){
     res$Panellist$`Reproducibility (Rank)` <- j_reprorank %>%
-      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x , n=2))) %>%
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x , n=2))) %>%
       dplyr::full_join(j_reprorank_col, by="Judge", suffix=c('','_col')) %>%
       dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
     res$Panellist$`Agreement (Rank)` <- j_agreerank %>%
-      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x , n=2))) %>%
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x , n=2))) %>%
       dplyr::full_join(j_agreerank_col, by="Judge", suffix=c('','_col')) %>%
       dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
   }
 
   res$Summary$Panellist <- j_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x , n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x , n=0))) %>%
     dplyr::full_join(j_sum_col, by="Judge", suffix=c('','_col'))%>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Summary$Attribute <- a_sum %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=0))) %>%
     dplyr::full_join(a_sum_col, by="Attribute", suffix=c('','_col'))%>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 

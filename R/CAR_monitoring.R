@@ -61,7 +61,7 @@ CAR_monitoring <- function(dataset, reference=NULL, ref_dev=c(0.5,1),
   ref_j <- dataset %>%
     dplyr::filter(Product %in% reference) %>%
     dplyr::select(Judge, tidyselect::all_of(attribute)) %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), abs))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), abs))
 
   ref_j_col <- ref_j %>%
     colour_code(value = ref_dev, direction=1)
@@ -117,7 +117,7 @@ CAR_monitoring <- function(dataset, reference=NULL, ref_dev=c(0.5,1),
                             Reproducibility = dup_j_col,
                             Agreement = agr_j_col), type="Judge")
   sum_j_col <- sum_j %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) convert(x, sum_max, sum_min)))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) convert(x, sum_max, sum_min)))
 
   sum_a <- summary_tab(list(Reference = ref_j_col,
                             Discrimination = dis_j_col,
@@ -126,7 +126,7 @@ CAR_monitoring <- function(dataset, reference=NULL, ref_dev=c(0.5,1),
     dplyr::mutate(Attribute = factor(Attribute, levels=attribute)) %>%
     dplyr::arrange(Attribute)
   sum_a_col <- sum_a %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) convert(x, sum_max, sum_min)))
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) convert(x, sum_max, sum_min)))
 
   ## Panel ----
   dataset2 <- dataset %>%
@@ -223,41 +223,41 @@ CAR_monitoring <- function(dataset, reference=NULL, ref_dev=c(0.5,1),
   res <- list()
 
   res$Panel <- panel %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=3))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=3))) %>%
     dplyr::full_join(panel_col, by="Attribute", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Reference <- ref_j %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(ref_j_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Panellist$Discrimination <- dis_j %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(dis_j_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   if (incl_duplo){
 
     res$Panellist$Reproducibility <- dup_j %>%
-      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
       dplyr::full_join(dup_j_col, by="Judge", suffix=c('','_col')) %>%
       dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   }
 
   res$Panellist$Agreement <- agr_j %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=2))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=2))) %>%
     dplyr::full_join(agr_j_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Summary$Panellist <- sum_j %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=0))) %>%
     dplyr::full_join(sum_j_col, by="Judge", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
   res$Summary$Attribute <- sum_a %>%
-    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric()), \(x) TWUtils::formatting(x, n=0))) %>%
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) TWUtils::formatting(x, n=0))) %>%
     dplyr::full_join(sum_a_col, by="Attribute", suffix=c('','_col')) %>%
     dplyr::mutate(dplyr::across(tidyselect::ends_with("_col"), \(x) tidyr::replace_na(x, 0)))
 
