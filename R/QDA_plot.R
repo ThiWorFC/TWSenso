@@ -38,7 +38,7 @@ QDA_plot <- function(dataset, firstvar=6, lastvar=ncol(dataset), attr_show="none
     data_plot <- res_pca$var$coord %>%
       as.data.frame() %>%
       tibble::rownames_to_column(var="Attribute") %>%
-      tidyr::separate(Attribute, c("Attribute","Judge"), sep="___") %>%
+      tidyr::separate(Attribute, c("Attribute","Judge"), sep = "___", fill = "right", extra = "merge") %>%
       dplyr::mutate(AttrShow = ifelse(Attribute == attr_show, Attribute, ""))
 
     xleg <- paste0("Dim 1 (",round(res_pca$eig[1,2],2),"%)")

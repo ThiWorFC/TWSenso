@@ -18,7 +18,7 @@ summary_tab <- function(data, type="Judge"){
       tidyr::unnest(Results) %>%
       dplyr::mutate(Ability = factor(Ability, levels=names(data))) %>%
       tidyr::pivot_longer(-c(1,2), names_to="Attribute", values_to="Scores") %>%
-      tidyr::separate(Judge, c("Judge", "Rep"), sep="_") %>%
+      tidyr::separate(Judge, c("Judge", "Rep"), sep = "_", fill = "right", extra = "merge") %>%
       dplyr::group_by(Ability, Judge, Attribute) %>%
       dplyr::summarise(Scores = mean(Scores)) %>%
       dplyr::mutate(Scores = case_when(
@@ -39,7 +39,7 @@ summary_tab <- function(data, type="Judge"){
       tidyr::unnest(Results) %>%
       dplyr::mutate(Ability = factor(Ability, levels=names(data))) %>%
       pivot_longer(-c(1,2), names_to="Attribute", values_to="Scores") %>%
-      tidyr::separate(Judge, c("Judge", "Rep"), sep="_") %>%
+      tidyr::separate(Judge, c("Judge", "Rep"), sep = "_", fill = "right", extra = "merge") %>%
       dplyr::group_by(Ability, Judge, Attribute) %>%
       dplyr::summarise(Scores = mean(Scores)) %>%
       dplyr::mutate(Scores = ifelse(Scores < 2, 1, ifelse(Scores > 2, 3, 2))) %>%

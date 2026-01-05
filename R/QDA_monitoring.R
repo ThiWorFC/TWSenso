@@ -69,6 +69,8 @@ QDA_monitoring <- function(dataset, col.r="Replica",
   dataset <- dataset %>%
     dplyr::mutate(dplyr::across(tidyselect::all_of(col.r), as.character))
 
+  print(col.r)
+
   nbrep <- dataset %>%
     dplyr::pull(tidyselect::all_of(col.r)) %>%
     unique() %>%
