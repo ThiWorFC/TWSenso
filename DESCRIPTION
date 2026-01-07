@@ -15,6 +15,7 @@ Imports:
     dplyr,
     factoextra,
     FactoMineR,
+    forcats,
     fpc,
     ggforce,
     ggplot2,
