@@ -192,7 +192,7 @@ PrefMap <- function(dataset, col.p=2, col.j=1, col.lik=6,
 
   for (i in seq_along(data_split)) {
 
-    res_prefmap_list[[i]] <- PrefMap_reg(.x = data_split[[i]], .y = thres[[i]], param = param,
+    res_prefmap_list[[i]] <- PrefMap_reg(data = data_split[[i]], threshold = thres[[i]], param = param,
                                          grid = grid, model = regmod, indsup = predict)
 
     # Update progress after each consumer
