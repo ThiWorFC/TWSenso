@@ -32,7 +32,7 @@ plot.PrefMap <- function(x, space, map="Proportion", colour=c("#39AECF","white",
     dplyr::rename(Dim1=2, Dim2=3)
 
   # Variable Configuration
-  if (include_var == "Yes"){
+  if (include_var){
     attr_config <- space$Loadings %>%
       dplyr::rename(Dim1=2, Dim2=3)
   }
