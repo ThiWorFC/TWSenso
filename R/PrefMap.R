@@ -244,5 +244,7 @@ PrefMap <- function(dataset, col.p=2, col.j=1, col.lik=6,
   }
 
   res <- list(Info = res_prefmap_info, Prediction = res_prefmap_pred, ProdPred = res_prefmap_sup)
+  class(res) <- c("PrefMap", "list")
+
   return(res)
 }
