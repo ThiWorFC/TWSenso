@@ -45,8 +45,8 @@ QDA_plot <- function(dataset, firstvar=6, lastvar=ncol(dataset), attr_show="none
     yleg <- paste0("Dim 2 (",round(res_pca$eig[2,2],2),"%)")
 
     p <- ggplot2::ggplot(data_plot)+
-      ggforce::geom_circle(aes(x0=0, y0=0, r=1), color="black")+
-      ggforce::geom_circle(aes(x0=0, y0=0, r=0.5), color="grey", linetype=2)+
+      ggforce::geom_circle(aes(x0=0, y0=0, r=1), color="black", inherit.aes = FALSE)+
+      ggforce::geom_circle(aes(x0=0, y0=0, r=0.5), color="grey", linetype=2, inherit.aes = FALSE)+
       ggplot2::geom_vline(xintercept=0, lty=2)+
       ggplot2::geom_hline(yintercept=0, lty=2)+
       ggplot2::coord_fixed()+
